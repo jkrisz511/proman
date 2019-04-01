@@ -21,6 +21,7 @@ def get_boards():
     """
     All the boards
     """
+
     return data_manager.get_boards()
 
 

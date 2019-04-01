@@ -15,3 +15,10 @@ def get_cards_for_board(cursor, board_id):
 
     cards = cursor.fetchall()
     return cards
+
+
+@connection.connection_handler
+def get_card_status(cursor):
+    cursor.execute("""SELECT * FROM statuses;""")
+    statuses = cursor.fetchall()
+    return statuses
