@@ -68,6 +68,7 @@ export let dom = {
                     </div>
                 </section>
             `;
+
         }
 
         const outerHtml = `
@@ -81,6 +82,9 @@ export let dom = {
         //Add new board
         let newBoard = document.querySelector('#create-board')
         newBoard.addEventListener('click', dom.createBoard)
+
+        //Edit board
+        dom.editBoard();
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
@@ -131,4 +135,16 @@ export let dom = {
         })
 
     },
+    editBoard: function () {
+        const boardTitles = document.querySelectorAll('.board-title')
+        console.log(boardTitles);
+        for (let board of boardTitles) {
+            board.addEventListener('click', function () {
+                board.innerHTML = `<form action="/rename-board">
+                                        <input type="text" name="new_title" placeholder="Title">
+                                        <button class="board">Save</button>
+                                   </form>`;
+            })
+        }
+    }
 };
