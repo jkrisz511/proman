@@ -35,7 +35,7 @@ export let dom = {
         for(let board of boards){
             boardList += `
                 <section class="board">
-                    <div class="board-header"><span class="board-title">${board.title}</span>
+                    <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
                         <button class="board-add">Add Card</button>
                         <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
                     </div>
@@ -80,7 +80,7 @@ export let dom = {
         this._appendToElement(document.querySelector('#boards'), outerHtml);
 
         //Add new board
-        let newBoard = document.querySelector('#create-board')
+        const newBoard = document.querySelector('#create-board')
         newBoard.addEventListener('click', dom.createBoard)
 
         //Edit board
@@ -96,42 +96,50 @@ export let dom = {
     // here comes more features
     createBoard: function () {
         dataHandler.createNewBoard( function (board) {
-            let createdBoard = `<section class="board">
-                    <div class="board-header"><span id="" class="board-title">${board.title}</span>
-                        <button class="board-add">Add Card</button>
-                        <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    
-                    <div class="board-columns">
-                        <div class="board-column">
-                            <div class="board-column-title">New</div>
-                            <div class="board-column-content">
-                            
+            let createdBoard = `
+                    <section class="board">
+                        <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
+                            <button class="board-add">Add Card</button>
+                            <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        
+                        <div class="board-columns">
+                            <div class="board-column">
+                                <div class="board-column-title">New</div>
+                                <div class="board-column-content">
+                                
+                                </div>
+                            </div>
+                            <div class="board-column">
+                                <div class="board-column-title">In Progress</div>
+                                <div class="board-column-content">
+                                
+                                </div>
+                            </div>
+                            <div class="board-column">
+                                <div class="board-column-title">Testing</div>
+                                <div class="board-column-content">
+                                
+                                </div>
+                            </div>
+                            <div class="board-column">
+                                <div class="board-column-title">Done</div>
+                                <div class="board-column-content">
+                                
+                                </div>
                             </div>
                         </div>
-                        <div class="board-column">
-                            <div class="board-column-title">In Progress</div>
-                            <div class="board-column-content">
-                            
-                            </div>
-                        </div>
-                        <div class="board-column">
-                            <div class="board-column-title">Testing</div>
-                            <div class="board-column-content">
-                            
-                            </div>
-                        </div>
-                        <div class="board-column">
-                            <div class="board-column-title">Done</div>
-                            <div class="board-column-content">
-                            
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
             `;
 
-            dom._appendToElement(document.querySelector('#boards'), createdBoard);
+            const outerHtml = `
+                <div class="board-container">
+                    ${createdBoard}
+                </div>
+            `;
+
+
+            dom._appendToElement(document.querySelector('#boards'), outerHtml);
         })
 
     },

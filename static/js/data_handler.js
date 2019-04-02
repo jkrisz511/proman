@@ -34,6 +34,7 @@ export let dataHandler = {
     },
 
     init: function () {
+
     },
 
     getBoards: function (callback) {
@@ -68,6 +69,7 @@ export let dataHandler = {
             callback(response);
         });
     },
+
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
     },
