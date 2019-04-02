@@ -26,4 +26,7 @@ def get_card_status(cursor):
 
 @connection.connection_handler
 def create_board(cursor):
-    cursor.execute("""INSERT INTO boards (title) VALUES (%(title)s)""", {"title": "New Board"})
+    cursor.execute("""INSERT INTO boards (title) VALUES (%(title)s) RETURNING *;""", {"title": "New Board"})
+    board = cursor.fetchone()
+    return board
+

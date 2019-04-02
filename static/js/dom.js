@@ -90,9 +90,10 @@ export let dom = {
         // it adds necessary event listeners also
     },
     // here comes more features
-    createBoard: function (board) {
-        let createdBoard = `<section class="board">
-                    <div class="board-header"><span class="board-title">${board.title}</span>
+    createBoard: function () {
+        dataHandler.createNewBoard( function (board) {
+            let createdBoard = `<section class="board">
+                    <div class="board-header"><span id="" class="board-title">${board.title}</span>
                         <button class="board-add">Add Card</button>
                         <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
                     </div>
@@ -125,7 +126,9 @@ export let dom = {
                     </div>
                 </section>
             `;
-        dom._appendToElement(document.querySelector('#boards'), createdBoard);
+
+            dom._appendToElement(document.querySelector('#boards'), createdBoard);
+        })
 
     },
 };
