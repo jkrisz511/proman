@@ -42,9 +42,9 @@ def create_board():
     return data_manager.create_board()
 
 
-@app.route("/rename-board/<int:boardId>", methods=['POST'])
+@app.route("/rename-board-title/<board_id>", methods=['POST'])
 @json_response
-def rename_board(board_id: int):
+def rename_board(board_id):
     new_title = request.get_json()['title']
     return data_manager.update_board(board_id, new_title)
 

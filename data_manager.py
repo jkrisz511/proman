@@ -32,7 +32,7 @@ def create_board(cursor):
 
 
 @connection.connection_handler
-def update_board(board_id, title, cursor):
+def update_board(cursor, board_id, title):
     cursor.execute("""UPDATE boards SET title = %(title)s
                       WHERE id = %(board_id)s;""", {"title": title, "board_id": board_id})
 

@@ -83,7 +83,7 @@ export let dom = {
         const newBoard = document.querySelector('#create-board')
         newBoard.addEventListener('click', dom.createBoard)
 
-        //Edit board
+        //Edit board title
         dom.editBoard();
     },
     loadCards: function (boardId) {
@@ -140,19 +140,29 @@ export let dom = {
 
 
             dom._appendToElement(document.querySelector('#boards'), outerHtml);
+
+            //Edit board title
+            dom.editBoard();
         })
 
     },
     editBoard: function () {
         const boardTitles = document.querySelectorAll('.board-title')
         console.log(boardTitles);
-        for (let board of boardTitles) {
-            board.addEventListener('click', function () {
-                board.innerHTML = `<form action="/rename-board">
-                                        <input type="text" name="new_title" placeholder="Title">
-                                        <button class="board">Save</button>
-                                   </form>`;
+        for (let boardTitle of boardTitles) {
+            boardTitle.addEventListener('click', function () {
+               dom.renameBoardTitle(boardTitle);
             })
         }
+    },
+    renameBoardTitle: function (boardTitle) {
+         boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="Title" required>`;
+         boardTitle.firstElementChild.focus();
+         boardTitle.firstElementChild.addEventListener('blur', function () {
+            let newTitle = this.value;
+            dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                boardTitle.innerHTML = `<span>${newTitle}</span>`;
+            });
+         });
     }
 };
