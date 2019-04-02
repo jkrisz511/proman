@@ -77,6 +77,10 @@ export let dom = {
         `;
 
         this._appendToElement(document.querySelector('#boards'), outerHtml);
+
+        //Add new board
+        let newBoard = document.querySelector('#create-board')
+        newBoard.addEventListener('click', dom.createBoard)
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
@@ -86,4 +90,42 @@ export let dom = {
         // it adds necessary event listeners also
     },
     // here comes more features
+    createBoard: function (board) {
+        let createdBoard = `<section class="board">
+                    <div class="board-header"><span class="board-title">${board.title}</span>
+                        <button class="board-add">Add Card</button>
+                        <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    
+                    <div class="board-columns">
+                        <div class="board-column">
+                            <div class="board-column-title">New</div>
+                            <div class="board-column-content">
+                            
+                            </div>
+                        </div>
+                        <div class="board-column">
+                            <div class="board-column-title">In Progress</div>
+                            <div class="board-column-content">
+                            
+                            </div>
+                        </div>
+                        <div class="board-column">
+                            <div class="board-column-title">Testing</div>
+                            <div class="board-column-content">
+                            
+                            </div>
+                        </div>
+                        <div class="board-column">
+                            <div class="board-column-title">Done</div>
+                            <div class="board-column-content">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        dom._appendToElement(document.querySelector('#boards'), createdBoard);
+
+    },
 };

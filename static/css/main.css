@@ -127,3 +127,7 @@ section.board{
 .card-title{
     padding-right: 16px;
 }
+
+.button-container {
+    text-align: center;
+}
