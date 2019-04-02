@@ -33,6 +33,7 @@ export let dom = {
         let boardList = '';
 
         for(let board of boards){
+            console.log(board);
             boardList += `
                 <section class="board">
                     <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
@@ -43,25 +44,25 @@ export let dom = {
                     <div class="board-columns">
                         <div class="board-column">
                             <div class="board-column-title">New</div>
-                            <div class="board-column-content">
+                            <div id="1" class="board-column-content">
                             
                             </div>
                         </div>
                         <div class="board-column">
                             <div class="board-column-title">In Progress</div>
-                            <div class="board-column-content">
+                            <div id="2" class="board-column-content">
                             
                             </div>
                         </div>
                         <div class="board-column">
                             <div class="board-column-title">Testing</div>
-                            <div class="board-column-content">
+                            <div id="3" class="board-column-content">
                             
                             </div>
                         </div>
                         <div class="board-column">
                             <div class="board-column-title">Done</div>
-                            <div class="board-column-content">
+                            <div id="4" class="board-column-content">
                             
                             </div>
                         </div>
@@ -69,6 +70,9 @@ export let dom = {
                 </section>
             `;
 
+            //load cards
+            console.log(this);
+            this.loadCards(board.id);
         }
 
         const outerHtml = `
@@ -85,13 +89,34 @@ export let dom = {
 
         //Edit board title
         dom.editBoard();
+
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
+        dataHandler.getCardsByBoardId(boardId, function (cards) {
+            console.log(cards);
+            dom.showCards(cards);
+        })
     },
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
+        const boardColumnContent = document.querySelectorAll('.board-column-content')
+        let cardsContent = '';
+        for (let column of boardColumnContent) {
+            console.log(column)
+            for (let card of cards) {
+                cardsContent += `<div class="card">
+                                    <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                                    <div class="card-title">${card.title}</div>
+                                </div>
+                                `;
+            }
+            dom._appendToElement(column, cardsContent);
+        }
+
+
+
     },
     // here comes more features
     createBoard: function () {
@@ -147,8 +172,7 @@ export let dom = {
 
     },
     editBoard: function () {
-        const boardTitles = document.querySelectorAll('.board-title')
-        console.log(boardTitles);
+        const boardTitles = document.querySelectorAll('.board-title');
         for (let boardTitle of boardTitles) {
             boardTitle.addEventListener('click', function () {
                dom.renameBoardTitle(boardTitle);
