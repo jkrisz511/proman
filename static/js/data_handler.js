@@ -34,6 +34,7 @@ export let dataHandler = {
     },
 
     init: function () {
+
     },
 
     getBoards: function (callback) {
@@ -68,8 +69,14 @@ export let dataHandler = {
             callback(response);
         });
     },
+
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
-    }
+    },
     // here comes more features
+    renameBoard: function (boardId, boardTitle, callback) {
+        this._api_post(`/rename-board-title/${boardId}`, {'title': boardTitle}, (response) => {
+            return callback(response);
+        });
+    }
 };

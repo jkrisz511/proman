@@ -33,8 +33,8 @@ PRIMARY KEY (id)
 );
 
 
-INSERT INTO boards VALUES (1, 'Board 1');
-INSERT INTO boards VALUES (2, 'Board 2');
+INSERT INTO boards (title) VALUES ('Board 1');
+INSERT INTO boards (title) VALUES ('Board 2');
 SELECT pg_catalog.setval('boards_id_seq', 2, true);
 
 
