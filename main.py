@@ -48,6 +48,18 @@ def rename_board(board_id):
     new_title = request.get_json()['title']
     return data_manager.update_board(board_id, new_title)
 
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    pass
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    pass
+
+@app.route('/logout')
+def logout():
+    pass
+
 
 def main():
     app.run(debug=True)
