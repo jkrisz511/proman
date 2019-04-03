@@ -167,3 +167,12 @@ li a:hover:not(.active) {
 }
 
 
+.wrapper {
+    margin-top: 40px;
+}
+
+.form-login {
+    max-width: 420px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+}

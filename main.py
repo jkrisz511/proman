@@ -1,18 +1,24 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request,session,redirect
 from util import json_response
+import bcrypt
+from datetime import timedelta
 
 import data_handler
 import data_manager
 
 app = Flask(__name__)
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
 
 @app.route("/")
 def index():
     """
     This is a one-pager which shows all the boards and cards
     """
-    return render_template('index.html')
+    username = None
+    if session.get('username') is not None:
+        username = session['username']
+    return render_template('index.html', username=username)
 
 
 @app.route("/get-boards")
@@ -50,15 +56,45 @@ def rename_board(board_id):
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    pass
+    if request.method == 'GET':
+        return render_template('login.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashed_password = data_manager.get_password_by_username(username)
+        if hashed_password is not None:
+            hashed_password = hashed_password.encode('utf-8')
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password) is True:
+                session['username'] = username
+                session.permanent = True
+                return redirect(url_for('index'))
+            else:
+                return render_template('login.html')
+        else:
+            return render_template('login.html')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    pass
+    if request.method == 'GET':
+        if session.get('username') is not None:
+            return redirect(url_for('register'))
+        else:
+            return render_template('register.html', error=None)
+    elif request.method == 'POST':
+        username = request.form['username']
+        if data_manager.check_username(username) == username:
+            return render_template('register.html', error="taken")
+        else:
+            password = request.form['password']
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            hashed_password = hashed_password.decode('utf-8')
+            data_manager.registration(username, hashed_password)
+            return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
-    pass
+    session.clear()
+    return redirect(url_for('index'))
 
 
 def main():
