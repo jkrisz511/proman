@@ -81,6 +81,14 @@ export let dom = {
         //Add new board
         let newBoard = document.querySelector('#create-board')
         newBoard.addEventListener('click', dom.createBoard)
+
+        // Hide the board
+        const buttons = document.querySelectorAll('.board-toggle')
+        buttons.forEach(function(currentBtn){
+        currentBtn.addEventListener('click', dom.hideBoards)
+        })
+
+
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
@@ -96,8 +104,7 @@ export let dom = {
                     <div class="board-header"><span id="" class="board-title">${board.title}</span>
                         <button class="board-add">Add Card</button>
                         <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    
+                    </div>  
                     <div class="board-columns">
                         <div class="board-column">
                             <div class="board-column-title">New</div>
@@ -131,4 +138,12 @@ export let dom = {
         })
 
     },
+    hideBoards: function () {
+          const columnBoardId = this.parentNode.nextElementSibling;
+          columnBoardId.classList.toggle("hidden")
+    },
+
+
+
 };
+

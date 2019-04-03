@@ -131,3 +131,7 @@ section.board{
 .button-container {
     text-align: center;
 }
+
+.hidden{
+    display: none;
+}
