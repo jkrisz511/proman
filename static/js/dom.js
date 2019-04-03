@@ -33,45 +33,35 @@ export let dom = {
         let boardList = '';
 
         for(let board of boards){
-            console.log(board);
             boardList += `
-                <section class="board">
-                    <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
-                        <button class="board-add">Add Card</button>
-                        <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    
-                    <div class="board-columns">
-                        <div class="board-column">
-                            <div class="board-column-title">New</div>
-                            <div id="1" class="board-column-content">
+                <section id="board-${board.id}" class="board">
+                        <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
+                            <button class="board-add">Add Card</button>
+                            <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        
+                        <div class="board-columns">
+                            <div class="col-1 board-column">
+                                <div class="board-column-title">New</div>
                             
                             </div>
-                        </div>
-                        <div class="board-column">
-                            <div class="board-column-title">In Progress</div>
-                            <div id="2" class="board-column-content">
-                            
+                            <div class="col-2 board-column">
+                                <div class="board-column-title">In Progress</div>
+                                
+                            </div>
+                            <div class="col-3 board-column">
+                                <div class="board-column-title">Testing</div>
+                                
+                            </div>
+                            <div class="col-4 board-column">
+                                <div class="board-column-title">Done</div>
+                                
                             </div>
                         </div>
-                        <div class="board-column">
-                            <div class="board-column-title">Testing</div>
-                            <div id="3" class="board-column-content">
-                            
-                            </div>
-                        </div>
-                        <div class="board-column">
-                            <div class="board-column-title">Done</div>
-                            <div id="4" class="board-column-content">
-                            
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
             `;
 
             //load cards
-            console.log(this);
             this.loadCards(board.id);
         }
 
@@ -84,8 +74,8 @@ export let dom = {
         this._appendToElement(document.querySelector('#boards'), outerHtml);
 
         //Add new board
-        const newBoard = document.querySelector('#create-board')
-        newBoard.addEventListener('click', dom.createBoard)
+        const newBoard = document.querySelector('#create-board');
+        newBoard.addEventListener('click', dom.createBoard);
 
         //Edit board title
         dom.editBoard();
@@ -94,64 +84,51 @@ export let dom = {
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, function (cards) {
-            console.log(cards);
             dom.showCards(cards);
         })
     },
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        const boardColumnContent = document.querySelectorAll('.board-column-content')
-        let cardsContent = '';
-        for (let column of boardColumnContent) {
-            console.log(column)
-            for (let card of cards) {
-                cardsContent += `<div class="card">
-                                    <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-                                    <div class="card-title">${card.title}</div>
-                                </div>
-                                `;
-            }
-            dom._appendToElement(column, cardsContent);
+        console.log(cards);
+        for (let card of cards) {
+            const boardDiv = document.querySelector(`#board-${card['board_id']}`);
+            const colDiv = boardDiv.querySelector(`.col-${card["statuses_id"]}`);
+            this._appendToElement(colDiv, `
+                <div class="card">
+                    <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                    <div class="card-title">${card["title"]}</div>
+                </div>`
+            );
         }
-
-
 
     },
     // here comes more features
     createBoard: function () {
         dataHandler.createNewBoard( function (board) {
             let createdBoard = `
-                    <section class="board">
+                    <section id="board-${board.id}" class="board">
                         <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
                             <button class="board-add">Add Card</button>
                             <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
                         </div>
                         
                         <div class="board-columns">
-                            <div class="board-column">
+                            <div class="col-1 board-column">
                                 <div class="board-column-title">New</div>
-                                <div class="board-column-content">
-                                
-                                </div>
+                            
                             </div>
-                            <div class="board-column">
+                            <div class="col-2 board-column">
                                 <div class="board-column-title">In Progress</div>
-                                <div class="board-column-content">
                                 
-                                </div>
                             </div>
-                            <div class="board-column">
+                            <div class="col-3 board-column">
                                 <div class="board-column-title">Testing</div>
-                                <div class="board-column-content">
                                 
-                                </div>
                             </div>
-                            <div class="board-column">
+                            <div class="col-4 board-column">
                                 <div class="board-column-title">Done</div>
-                                <div class="board-column-content">
                                 
-                                </div>
                             </div>
                         </div>
                     </section>
@@ -168,6 +145,7 @@ export let dom = {
 
             //Edit board title
             dom.editBoard();
+
         })
 
     },
