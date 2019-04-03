@@ -77,6 +77,12 @@ export let dom = {
         const newBoard = document.querySelector('#create-board');
         newBoard.addEventListener('click', dom.createBoard);
 
+        // Toggle the board
+        const buttons = document.querySelectorAll('.board-toggle');
+        buttons.forEach(function(currentBtn){
+            currentBtn.addEventListener('click', dom.toggleBoard);
+        });
+
         //Edit board title
         dom.editBoard();
 
@@ -106,6 +112,7 @@ export let dom = {
     // here comes more features
     createBoard: function () {
         dataHandler.createNewBoard( function (board) {
+
             let createdBoard = `
                     <section id="board-${board.id}" class="board">
                         <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
@@ -143,12 +150,26 @@ export let dom = {
 
             dom._appendToElement(document.querySelector('#boards'), outerHtml);
 
+            // Toggle the board
+            const buttons = document.querySelectorAll('.board-toggle');
+            buttons.forEach(function(currentBtn){
+                currentBtn.addEventListener('click', dom.toggleBoard);
+            });
+
+
             //Edit board title
             dom.editBoard();
 
         })
 
+
     },
+    toggleBoard: function () {
+          const columnBoardId = this.parentNode.nextElementSibling;
+          columnBoardId.classList.toggle("hidden")
+    },
+
+
     editBoard: function () {
         const boardTitles = document.querySelectorAll('.board-title');
         for (let boardTitle of boardTitles) {
@@ -167,4 +188,6 @@ export let dom = {
             });
          });
     }
+
 };
+
