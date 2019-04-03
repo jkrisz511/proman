@@ -82,7 +82,7 @@ export let dom = {
         let newBoard = document.querySelector('#create-board')
         newBoard.addEventListener('click', dom.createBoard)
 
-        // Hide the board
+        // Toggle the board
         const buttons = document.querySelectorAll('.board-toggle')
         buttons.forEach(function(currentBtn){
         currentBtn.addEventListener('click', dom.toggleBoard)
@@ -135,11 +135,18 @@ export let dom = {
             `;
 
             dom._appendToElement(document.querySelector('#boards'), createdBoard);
+            // Toggle the board
+            const buttons = document.querySelectorAll('.board-toggle')
+            buttons.forEach(function(currentBtn){
+            currentBtn.addEventListener('click', dom.toggleBoard)
+            })
         })
+
 
     },
     toggleBoard: function () {
           const columnBoardId = this.parentNode.nextElementSibling;
+          console.log(columnBoardId)
           columnBoardId.classList.toggle("hidden")
     },
 
