@@ -85,7 +85,7 @@ export let dom = {
         // Hide the board
         const buttons = document.querySelectorAll('.board-toggle')
         buttons.forEach(function(currentBtn){
-        currentBtn.addEventListener('click', dom.hideBoards)
+        currentBtn.addEventListener('click', dom.toggleBoard)
         })
 
 
@@ -138,7 +138,7 @@ export let dom = {
         })
 
     },
-    hideBoards: function () {
+    toggleBoard: function () {
           const columnBoardId = this.parentNode.nextElementSibling;
           columnBoardId.classList.toggle("hidden")
     },
