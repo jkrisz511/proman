@@ -209,14 +209,22 @@ export let dom = {
         const boardTitles = document.querySelectorAll('.board-title');
         for (let boardTitle of boardTitles) {
             boardTitle.addEventListener('click', function () {
-               dom.renameBoardTitle(boardTitle);
+                dom.renameBoardTitle(boardTitle);
             })
         }
     },
     renameBoardTitle: function (boardTitle) {
-         boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="Title" required>`;
+         boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="${boardTitle.textContent}" required>
+                                 <button class="board-add">Save</button>`;
          boardTitle.firstElementChild.focus();
+         console.log(boardTitle.children[1])
          boardTitle.firstElementChild.addEventListener('blur', function () {
+            let newTitle = this.value;
+            dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                boardTitle.innerHTML = `<span>${newTitle}</span>`;
+            });
+         });
+         boardTitle.children[1].addEventListener('click', function () {
             let newTitle = this.value;
             dataHandler.renameBoard(boardTitle.id, newTitle, function () {
                 boardTitle.innerHTML = `<span>${newTitle}</span>`;
