@@ -24,18 +24,28 @@
           <li><a href="{{ url_for('login') }}">Login</a></li>
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
-        {% if username is not none %}
-            <div> <p class="h4">Logged in as {{username}}</p> </div>
-        {% endif %}
-        <h1>ProMan</h1>
 
-        <div class="button-container">
-            <button id="create-board">Create new board</button>
-        </div>
+        <div class="wrapper">
 
+        <form class="form-login" action="" method="post">
+            <h2>Sign Up</h2>
+            {% if error == "taken" %}
+                <h3>Username is already taken!</h3>
+            {% endif %}
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" minlength="3" aria-describedby="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" minlength="5" placeholder="Password">
+            </div>
 
-        <div id="boards">
+            <button type="submit" class="form-button btn btn-primary btn-block">Sign Up</button>
 
-        </div>
+        </form>
+    </div>
     </body>
 </html>
+
+
+
+
