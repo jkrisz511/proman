@@ -184,6 +184,17 @@ export let dom = {
             //Edit board title
             dom.editBoard();
 
+
+            //Add new card
+            const addButtons = document.querySelectorAll('.board-add')
+            for (let button of addButtons) {
+                button.addEventListener('click', function () {
+                    let boardIdText = button.closest('.board').getAttribute('id');
+                    let boardIdNumber = boardIdText.slice(-1);
+                    dom.createCard(boardIdNumber);
+                });
+            }
+
         })
 
 
