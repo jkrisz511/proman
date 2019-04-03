@@ -35,10 +35,17 @@ def get_cards_for_board(board_id):
     return data_manager.get_cards_for_board(board_id)
 
 
+@app.route("/create-card")
+@json_response
+def create_card():
+    board_id = request.args.get('board_id')
+
+    return data_manager.create_card(board_id)
+
+
 @app.route("/create-board")
 @json_response
 def create_board():
-
     return data_manager.create_board()
 
 

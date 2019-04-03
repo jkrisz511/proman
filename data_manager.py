@@ -37,3 +37,10 @@ def update_board(cursor, board_id, title):
                       WHERE id = %(board_id)s;""", {"title": title, "board_id": board_id})
 
 
+@connection.connection_handler
+def create_card(cursor, board_id):
+    cursor.execute("""INSERT INTO cards(board_id, title, statuses_id, card_order)
+                      VALUES (%(board_id)s, %(title)s, %(status_id)s, %(card_order)s) RETURNING *""",
+                      {'board_id': board_id, 'title': 'New Card', 'status_id': 1, 'card_order': 0}
+                   )
+    return cursor.fetchone()
