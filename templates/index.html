@@ -22,7 +22,9 @@
           <li><a class="active" href="{{ url_for('index') }}">Home</a></li>
           <li><a href="{{ url_for('register') }}">Register</a></li>
           <li><a href="{{ url_for('login') }}">Login</a></li>
+            {%  if username is not none %}
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
+             {% endif %}
         </ul>
         {% if username is not none %}
             <div> <p class="h4">Logged in as {{username}}</p> </div>
