@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request,session,redirect
+from flask import Flask, render_template, url_for, request, session, redirect
 from util import json_response
 import bcrypt
 from datetime import timedelta
@@ -41,10 +41,17 @@ def get_cards_for_board(board_id):
     return data_manager.get_cards_for_board(board_id)
 
 
+@app.route("/create-card")
+@json_response
+def create_card():
+    board_id = request.args.get('board_id')
+
+    return data_manager.create_card(board_id)
+
+
 @app.route("/create-board")
 @json_response
 def create_board():
-
     return data_manager.create_board()
 
 

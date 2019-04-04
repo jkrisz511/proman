@@ -63,8 +63,11 @@ export let dataHandler = {
             callback(response);
         });
     },
+
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
+
+
     },
     createNewBoard: function (callback) {
         // creates new board, saves it and calls the callback function with its data
@@ -74,8 +77,12 @@ export let dataHandler = {
         });
     },
 
-    createNewCard: function (cardTitle, boardId, statusId, callback) {
+    createNewCard: function (boardId, callback) {
         // creates new card, saves it and calls the callback function with its data
+        this._api_get(`/create-card?board_id=${boardId}`, (response) => {
+            this._data = response;
+            callback(response);
+        });
     },
     // here comes more features
     renameBoard: function (boardId, boardTitle, callback) {

@@ -86,17 +86,28 @@ export let dom = {
         //Edit board title
         dom.editBoard();
 
+        //Add new card
+        const addButtons = document.querySelectorAll('.board-add')
+        for (let button of addButtons) {
+            button.addEventListener('click', function () {
+                let boardIdText = button.closest('.board').getAttribute('id');
+                let boardIdNumber = boardIdText.slice(-1);
+                dom.createCard(boardIdNumber);
+            });
+        }
+
     },
+
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards);
         })
     },
+
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        console.log(cards);
         for (let card of cards) {
             const boardDiv = document.querySelector(`#board-${card['board_id']}`);
             const colDiv = boardDiv.querySelector(`.col-${card["statuses_id"]}`);
@@ -109,6 +120,19 @@ export let dom = {
         }
 
     },
+
+     showCard: function(card) {
+
+            const boardDiv = document.querySelector(`#board-${card['board_id']}`);
+            const colDiv = boardDiv.querySelector(`.col-${card["statuses_id"]}`);
+            this._appendToElement(colDiv, `
+                <div  data-card-id="${card.id}" class="card">
+                    <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                    <div class="card-title">${card["title"]}</div>
+                </div>`
+            );
+    },
+
     // here comes more features
     createBoard: function () {
         dataHandler.createNewBoard( function (board) {
@@ -160,6 +184,17 @@ export let dom = {
             //Edit board title
             dom.editBoard();
 
+
+            //Add new card
+            const addButtons = document.querySelectorAll('.board-add')
+            for (let button of addButtons) {
+                button.addEventListener('click', function () {
+                    let boardIdText = button.closest('.board').getAttribute('id');
+                    let boardIdNumber = boardIdText.slice(-1);
+                    dom.createCard(boardIdNumber);
+                });
+            }
+
         })
 
 
@@ -174,19 +209,33 @@ export let dom = {
         const boardTitles = document.querySelectorAll('.board-title');
         for (let boardTitle of boardTitles) {
             boardTitle.addEventListener('click', function () {
-               dom.renameBoardTitle(boardTitle);
+                dom.renameBoardTitle(boardTitle);
             })
         }
     },
     renameBoardTitle: function (boardTitle) {
-         boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="Title" required>`;
+         boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="${boardTitle.textContent}" required>
+                                 <button class="board-add">Save</button>`;
          boardTitle.firstElementChild.focus();
+         console.log(boardTitle.children[1])
          boardTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
             dataHandler.renameBoard(boardTitle.id, newTitle, function () {
                 boardTitle.innerHTML = `<span>${newTitle}</span>`;
             });
          });
+         boardTitle.children[1].addEventListener('click', function () {
+            let newTitle = this.value;
+            dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                boardTitle.innerHTML = `<span>${newTitle}</span>`;
+            });
+         });
+    },
+
+    createCard: function (boardId) {
+        dataHandler.createNewCard(boardId, function (card) {
+            dom.showCard(card);
+        })
     }
 
 };
