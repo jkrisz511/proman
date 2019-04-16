@@ -3,7 +3,7 @@ import connection
 
 @connection.connection_handler
 def get_boards(cursor):
-    cursor.execute("""SELECT * FROM boards;""")
+    cursor.execute("""SELECT * FROM boards ORDER BY id;""")
 
     boards = cursor.fetchall()
     return boards
@@ -35,6 +35,7 @@ def create_board(cursor):
 def update_board(cursor, board_id, title):
     cursor.execute("""UPDATE boards SET title = %(title)s
                       WHERE id = %(board_id)s;""", {"title": title, "board_id": board_id})
+
 
 @connection.connection_handler
 def get_password_by_username(cursor, username):

@@ -217,7 +217,6 @@ export let dom = {
          boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="${boardTitle.textContent}" required>
                                  <button class="board-add">Save</button>`;
          boardTitle.firstElementChild.focus();
-         console.log(boardTitle.children[1])
          boardTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
             dataHandler.renameBoard(boardTitle.id, newTitle, function () {
