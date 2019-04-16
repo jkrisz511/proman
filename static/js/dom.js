@@ -87,7 +87,7 @@ export let dom = {
         dom.editBoard();
 
         //Add new card
-        const addButtons = document.querySelectorAll('.board-add')
+        const addButtons = document.querySelectorAll('.board-add');
         for (let button of addButtons) {
             button.addEventListener('click', function () {
                 let boardIdText = button.closest('.board').getAttribute('id');
@@ -195,39 +195,43 @@ export let dom = {
                 });
             }
 
-        })
+        });
 
 
     },
     toggleBoard: function () {
           const columnBoardId = this.parentNode.nextElementSibling;
-          columnBoardId.classList.toggle("hidden")
+          columnBoardId.classList.toggle("hidden");
     },
 
 
     editBoard: function () {
         const boardTitles = document.querySelectorAll('.board-title');
         for (let boardTitle of boardTitles) {
-            boardTitle.addEventListener('click', function () {
-                dom.renameBoardTitle(boardTitle);
-            })
+            boardTitle.addEventListener('click', dom.renameBoardTitle);
         }
     },
-    renameBoardTitle: function (boardTitle) {
+    renameBoardTitle: function (e) {
+         let boardTitle = e.currentTarget;
          boardTitle.innerHTML = `<input type="text" name="new_title" placeholder="${boardTitle.textContent}" required>
                                  <button class="board-add">Save</button>`;
          boardTitle.firstElementChild.focus();
          boardTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
-            dataHandler.renameBoard(boardTitle.id, newTitle, function () {
-                boardTitle.innerHTML = `<span>${newTitle}</span>`;
-            });
+            if (newTitle !== '') {
+                    dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                    boardTitle.innerHTML = `<span>${newTitle}</span>`;
+                });
+            }
+
          });
          boardTitle.children[1].addEventListener('click', function () {
             let newTitle = this.value;
-            dataHandler.renameBoard(boardTitle.id, newTitle, function () {
-                boardTitle.innerHTML = `<span>${newTitle}</span>`;
-            });
+            if (newTitle !== '') {
+                dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                    boardTitle.innerHTML = `<span>${newTitle}</span>`;
+                });
+            }
          });
     },
 
