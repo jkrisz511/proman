@@ -3,12 +3,15 @@ import connection
 
 @connection.connection_handler
 def get_boards(cursor):
-    cursor.execute("""SELECT boards.id, boards.title,
-                      array_agg(statuses.id) AS status_id, array_agg(statuses.title) AS status_title
+    cursor.execute("""SELECT 
+                          boards.id, 
+                          boards.title,
+                          array_agg(statuses.id ORDER BY statuses.id ASC) AS status_id, 
+                          array_agg(statuses.title ORDER BY statuses.id ASC) AS status_title
                       FROM boards
                       JOIN statuses ON boards.id = statuses.board_id
                       GROUP BY boards.id
-                      ORDER BY boards.id, status_id;""")
+                      ORDER BY boards.id;""")
 
     boards = cursor.fetchall()
     return boards
