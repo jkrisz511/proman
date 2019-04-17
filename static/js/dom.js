@@ -90,7 +90,9 @@ export let dom = {
 
         //Add new card
         const addButtons = document.querySelectorAll('.board-add');
+
         for (let button of addButtons) {
+
             button.addEventListener('click', function () {
                 let boardIdText = button.closest('.board').getAttribute('id');
                 let boardIdNumber = boardIdText.slice(-1);
@@ -104,6 +106,7 @@ export let dom = {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards);
+            dom.editCard();
         })
     },
 
@@ -114,7 +117,7 @@ export let dom = {
             const boardDiv = document.querySelector(`#board-${card['board_id']}`);
             const colDiv = boardDiv.querySelector(`.col-${card["statuses_id"]}`);
             this._appendToElement(colDiv, `
-                <div class="card">
+                <div data-card-id="${card.id}" class="card">
                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
                     <div class="card-title">${card["title"]}</div>
                 </div>`
@@ -140,7 +143,7 @@ export let dom = {
         dataHandler.createNewBoard( function (board) {
             board = board[0];
             let createdBoard = `
-                    <section id="board-${board.board_id}" class="board">
+                    <section id="board-${board.id}" class="board">
                         <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
                             <button class="board-add">Add Card</button>
                             <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
@@ -194,7 +197,9 @@ export let dom = {
             for (let button of addButtons) {
                 button.addEventListener('click', function () {
                     let boardIdText = button.closest('.board').getAttribute('id');
+                    console.log(button);
                     let boardIdNumber = boardIdText.slice(-1);
+                    console.log(boardIdText);
                     dom.createCard(boardIdNumber);
                 });
             }
@@ -242,9 +247,43 @@ export let dom = {
     createCard: function (boardId) {
         dataHandler.createNewCard(boardId, function (card) {
             dom.showCard(card);
+            //Edit card title
+            dom.editCard();
         })
     },
+    editCard: function () {
+        console.log('hello');
+        const boards = document.querySelectorAll('.board');
+        for (let board of boards) {
+            const columns = board.querySelectorAll('.board-column');
+            for (let column of columns) {
+                const cardTitles = column.querySelectorAll('.card-title');
 
+                for (let cardTitle of cardTitles) {
+                    console.log(cardTitle);
+
+                    cardTitle.addEventListener('click', dom.renameCardTitle);
+                }
+            }
+        }
+    },
+    renameCardTitle: function (e) {
+         let cardTitle = e.currentTarget;
+         cardTitle.innerHTML = `<input type="text" name="new_title" placeholder="${cardTitle.textContent}" required>`;
+         cardTitle.firstElementChild.focus();
+         cardTitle.firstElementChild.addEventListener('blur', function () {
+            let newTitle = this.value;
+            console.log(newTitle);
+            let cardDataId = cardTitle.closest('.card').getAttribute('data-card-id');
+
+            if (newTitle !== '') {
+                dataHandler.renameCard(cardDataId, newTitle, function () {
+                    cardTitle.innerHTML = `<span>${newTitle}</span>`;
+                });
+            }
+
+         });
+    },
     editColumn: function () {
         const boards = document.querySelectorAll('.board');
         for (let board of boards) {
@@ -261,7 +300,6 @@ export let dom = {
          columnTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
             let colId = columnTitle.getAttribute('id').slice(-1);
-            console.log(newTitle);
             if (newTitle !== '') {
                 dataHandler.renameColumn(colId, newTitle, function () {
                     columnTitle.innerHTML = `<span>${newTitle}</span>`;

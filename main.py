@@ -28,8 +28,7 @@ def get_boards():
     """
     All the boards
     """
-    data = data_manager.get_boards()
-    print(data)
+
     return data_manager.get_boards()
 
 
@@ -43,11 +42,10 @@ def get_cards_for_board(board_id):
     return data_manager.get_cards_for_board(board_id)
 
 
-@app.route("/create-card")
+@app.route("/create-card/<board_id>")
 @json_response
-def create_card():
-    board_id = request.args.get('board_id')
-
+def create_card(board_id):
+    print(board_id)
     return data_manager.create_card(board_id)
 
 
@@ -56,7 +54,6 @@ def create_card():
 def create_board():
     new_board = data_manager.create_board()
     new_board_datas = data_manager.add_default_statuses(new_board['id'])
-    print(new_board_datas)
     return new_board_datas
 
 
@@ -72,6 +69,13 @@ def rename_board(board_id):
 def rename_column(column_id):
     new_title = request.get_json()['title']
     return data_manager.update_column(column_id, new_title)
+
+
+@app.route("/rename-card-title/<int:card_id>", methods=['POST'])
+@json_response
+def rename_card(card_id):
+    new_title = request.get_json()['title']
+    return data_manager.update_column(card_id, new_title)
 
 
 @app.route("/login", methods=['GET', 'POST'])

@@ -19,7 +19,8 @@ def get_boards(cursor):
 
 @connection.connection_handler
 def get_cards_for_board(cursor, board_id):
-    cursor.execute("""SELECT * FROM cards WHERE board_id=%(board_id)s;""", {"board_id": board_id})
+    cursor.execute("""SELECT * FROM cards WHERE board_id=%(board_id)s
+                      ORDER BY id;""", {"board_id": board_id})
 
     cards = cursor.fetchall()
     return cards
@@ -70,6 +71,12 @@ def update_board(cursor, board_id, title):
 def update_column(cursor, column_id, title):
     cursor.execute("""UPDATE statuses SET title = %(title)s
                       WHERE id = %(column_id)s;""", {"title": title, "column_id": column_id})
+
+
+@connection.connection_handler
+def update_column(cursor, card_id, title):
+    cursor.execute("""UPDATE cards SET title = %(title)s
+                      WHERE id = %(card_id)s;""", {"title": title, "card_id": card_id})
 
 
 @connection.connection_handler

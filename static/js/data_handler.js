@@ -79,7 +79,7 @@ export let dataHandler = {
 
     createNewCard: function (boardId, callback) {
         // creates new card, saves it and calls the callback function with its data
-        this._api_get(`/create-card?board_id=${boardId}`, (response) => {
+        this._api_get(`/create-card/${boardId}`, (response) => {
             this._data = response;
             callback(response);
         });
@@ -92,6 +92,11 @@ export let dataHandler = {
     },
     renameColumn: function (columnId, columnTitle, callback) {
         this._api_post(`/rename-column-title/${columnId}`, {'title': columnTitle}, (response) => {
+            return callback(response);
+        });
+    },
+    renameCard: function (cardId, cardTitle, callback) {
+        this._api_post(`/rename-card-title/${cardId}`, {'title': cardTitle}, (response) => {
             return callback(response);
         });
     },
