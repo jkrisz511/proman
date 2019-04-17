@@ -70,6 +70,7 @@ def rename_column(column_id):
     new_title = request.get_json()['title']
     return data_manager.update_column(column_id, new_title)
 
+
 @app.route("/delete-card-/<int:card_id>", methods=['POST'])
 @json_response
 def delete_card(card_id):
