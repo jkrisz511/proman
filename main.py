@@ -75,7 +75,7 @@ def rename_column(column_id):
 @json_response
 def rename_card(card_id):
     new_title = request.get_json()['title']
-    return data_manager.update_column(card_id, new_title)
+    return data_manager.update_card(card_id, new_title)
 
 
 @app.route("/login", methods=['GET', 'POST'])

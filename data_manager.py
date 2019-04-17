@@ -74,7 +74,7 @@ def update_column(cursor, column_id, title):
 
 
 @connection.connection_handler
-def update_column(cursor, card_id, title):
+def update_card(cursor, card_id, title):
     cursor.execute("""UPDATE cards SET title = %(title)s
                       WHERE id = %(card_id)s;""", {"title": title, "card_id": card_id})
 

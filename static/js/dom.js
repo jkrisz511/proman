@@ -41,19 +41,19 @@ export let dom = {
                         
                         <div class="board-columns">
                             <div class="col-1 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[0]}">${board.status_title[0]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[0]}">${board.status_title[0]}</div>
                             
                             </div>
                             <div class="col-2 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[1]}">${board.status_title[1]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[1]}">${board.status_title[1]}</div>
                                 
                             </div>
                             <div class="col-3 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[2]}">${board.status_title[2]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[2]}">${board.status_title[2]}</div>
                                 
                             </div>
                             <div class="col-4 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[3]}">${board.status_title[3]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[3]}">${board.status_title[3]}</div>
                                 
                             </div>
                         </div>
@@ -151,19 +151,19 @@ export let dom = {
                         
                         <div class="board-columns">
                             <div class="col-1 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[0]}">${board.status_title[0]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[0]}">${board.status_title[0]}</div>
                             
                             </div>
                             <div class="col-2 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[1]}">${board.status_title[1]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[1]}">${board.status_title[1]}</div>
                                 
                             </div>
                             <div class="col-3 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[2]}">${board.status_title[2]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[2]}">${board.status_title[2]}</div>
                                 
                             </div>
                             <div class="col-4 board-column">
-                                <div class="board-column-title" id="column-${board.status_id[3]}">${board.status_title[3]}</div>
+                                <div class="board-column-title" data-column-id="${board.status_id[3]}">${board.status_title[3]}</div>
                                 
                             </div>
                         </div>
@@ -299,7 +299,7 @@ export let dom = {
          columnTitle.firstElementChild.focus();
          columnTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
-            let colId = columnTitle.getAttribute('id').slice(-1);
+            let colId = columnTitle.getAttribute('data-column-id');
             if (newTitle !== '') {
                 dataHandler.renameColumn(colId, newTitle, function () {
                     columnTitle.innerHTML = `<span>${newTitle}</span>`;
