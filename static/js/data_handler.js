@@ -95,8 +95,14 @@ export let dataHandler = {
             return callback(response);
         });
     },
+
     renameCard: function (cardId, cardTitle, callback) {
         this._api_post(`/rename-card-title/${cardId}`, {'title': cardTitle}, (response) => {
+            return callback(response);
+        });
+    },
+    deleteCard: function (cardId, callback) {
+        this._api_post(`/delete-card-/${cardId}`, {'id': cardId}, (response) => {
             return callback(response);
         });
     },

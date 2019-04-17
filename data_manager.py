@@ -121,3 +121,7 @@ def create_card(cursor, board_id):
                    )
     return cursor.fetchone()
 
+@connection.connection_handler
+def delete_card(cursor, card_id):
+    cursor.execute("""DELETE FROM cards WHERE id=%(id)s;""", {'id': card_id})
+
