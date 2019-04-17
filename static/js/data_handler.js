@@ -89,5 +89,10 @@ export let dataHandler = {
         this._api_post(`/rename-board-title/${boardId}`, {'title': boardTitle}, (response) => {
             return callback(response);
         });
-    }
+    },
+    renameColumn: function (columnId, columnTitle, callback) {
+        this._api_post(`/rename-column-title/${columnId}`, {'title': columnTitle}, (response) => {
+            return callback(response);
+        });
+    },
 };

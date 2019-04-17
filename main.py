@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
 
+
 @app.route("/")
 def index():
     """
@@ -27,7 +28,8 @@ def get_boards():
     """
     All the boards
     """
-
+    data = data_manager.get_boards()
+    print(data)
     return data_manager.get_boards()
 
 
@@ -52,7 +54,10 @@ def create_card():
 @app.route("/create-board")
 @json_response
 def create_board():
-    return data_manager.create_board()
+    new_board = data_manager.create_board()
+    new_board_datas = data_manager.add_default_statuses(new_board['id'])
+    print(new_board_datas)
+    return new_board_datas
 
 
 @app.route("/rename-board-title/<board_id>", methods=['POST'])
@@ -60,6 +65,14 @@ def create_board():
 def rename_board(board_id):
     new_title = request.get_json()['title']
     return data_manager.update_board(board_id, new_title)
+
+
+@app.route("/rename-column-title/<int:column_id>", methods=['POST'])
+@json_response
+def rename_column(column_id):
+    new_title = request.get_json()['title']
+    return data_manager.update_column(column_id, new_title)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -80,6 +93,7 @@ def login():
         else:
             return render_template('login.html')
 
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -97,6 +111,7 @@ def register():
             hashed_password = hashed_password.decode('utf-8')
             data_manager.registration(username, hashed_password)
             return redirect(url_for('index'))
+
 
 @app.route('/logout')
 def logout():

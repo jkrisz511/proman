@@ -39,6 +39,7 @@ DROP SEQUENCE IF EXISTS public.statuses_id_seq;
 CREATE TABLE statuses (
   id serial NOT NULL,
   title text,
+  board_id integer,
 PRIMARY KEY (id)
 );
 
@@ -63,11 +64,15 @@ INSERT INTO cards VALUES (12, 2, 'new card 1', 1, 1);
 SELECT pg_catalog.setval('cards_id_seq', 12, true);
 
 
-INSERT INTO statuses VALUES (1, 'new');
-INSERT INTO statuses VALUES (2, 'in progress');
-INSERT INTO statuses VALUES (3, 'testing');
-INSERT INTO statuses VALUES (4, 'done');
-SELECT pg_catalog.setval('statuses_id_seq', 4, true);
+INSERT INTO statuses VALUES (1, 'new', 1);
+INSERT INTO statuses VALUES (2, 'in progress', 1);
+INSERT INTO statuses VALUES (3, 'testing', 1);
+INSERT INTO statuses VALUES (4, 'done', 1);
+INSERT INTO statuses VALUES (5, 'new', 2);
+INSERT INTO statuses VALUES (6, 'in progress', 2);
+INSERT INTO statuses VALUES (7, 'testing', 2);
+INSERT INTO statuses VALUES (8, 'done', 2);
+SELECT pg_catalog.setval('statuses_id_seq', 8, true);
 
 
 ALTER TABLE ONLY cards
@@ -77,3 +82,6 @@ ALTER TABLE ONLY cards
 ALTER TABLE ONLY cards
     ADD CONSTRAINT pk_statuses_id FOREIGN KEY (statuses_id) REFERENCES statuses(id) ON DELETE CASCADE;
 
+
+ALTER TABLE ONLY statuses
+    ADD CONSTRAINT pk_boards_id FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE;

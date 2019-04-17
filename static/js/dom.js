@@ -29,7 +29,6 @@ export let dom = {
     showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
-
         let boardList = '';
 
         for(let board of boards){
@@ -42,19 +41,19 @@ export let dom = {
                         
                         <div class="board-columns">
                             <div class="col-1 board-column">
-                                <div class="board-column-title">New</div>
+                                <div class="board-column-title" id="column-${board.status_id[0]}">${board.status_title[0]}</div>
                             
                             </div>
                             <div class="col-2 board-column">
-                                <div class="board-column-title">In Progress</div>
+                                <div class="board-column-title" id="column-${board.status_id[1]}">${board.status_title[1]}</div>
                                 
                             </div>
                             <div class="col-3 board-column">
-                                <div class="board-column-title">Testing</div>
+                                <div class="board-column-title" id="column-${board.status_id[2]}">${board.status_title[2]}</div>
                                 
                             </div>
                             <div class="col-4 board-column">
-                                <div class="board-column-title">Done</div>
+                                <div class="board-column-title" id="column-${board.status_id[3]}">${board.status_title[3]}</div>
                                 
                             </div>
                         </div>
@@ -85,6 +84,9 @@ export let dom = {
 
         //Edit board title
         dom.editBoard();
+
+        //Edit column title
+        dom.editColumn();
 
         //Add new card
         const addButtons = document.querySelectorAll('.board-add');
@@ -136,9 +138,9 @@ export let dom = {
     // here comes more features
     createBoard: function () {
         dataHandler.createNewBoard( function (board) {
-
+            board = board[0];
             let createdBoard = `
-                    <section id="board-${board.id}" class="board">
+                    <section id="board-${board.board_id}" class="board">
                         <div class="board-header"><span id=${board.id} class="board-title">${board.title}</span>
                             <button class="board-add">Add Card</button>
                             <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
@@ -146,19 +148,19 @@ export let dom = {
                         
                         <div class="board-columns">
                             <div class="col-1 board-column">
-                                <div class="board-column-title">New</div>
+                                <div class="board-column-title" id="column-${board.status_id[0]}">${board.status_title[0]}</div>
                             
                             </div>
                             <div class="col-2 board-column">
-                                <div class="board-column-title">In Progress</div>
+                                <div class="board-column-title" id="column-${board.status_id[1]}">${board.status_title[1]}</div>
                                 
                             </div>
                             <div class="col-3 board-column">
-                                <div class="board-column-title">Testing</div>
+                                <div class="board-column-title" id="column-${board.status_id[2]}">${board.status_title[2]}</div>
                                 
                             </div>
                             <div class="col-4 board-column">
-                                <div class="board-column-title">Done</div>
+                                <div class="board-column-title" id="column-${board.status_id[3]}">${board.status_title[3]}</div>
                                 
                             </div>
                         </div>
@@ -184,9 +186,11 @@ export let dom = {
             //Edit board title
             dom.editBoard();
 
+            //Edit column title
+            dom.editColumn();
 
             //Add new card
-            const addButtons = document.querySelectorAll('.board-add')
+            const addButtons = document.querySelectorAll('.board-add');
             for (let button of addButtons) {
                 button.addEventListener('click', function () {
                     let boardIdText = button.closest('.board').getAttribute('id');
@@ -219,7 +223,7 @@ export let dom = {
          boardTitle.firstElementChild.addEventListener('blur', function () {
             let newTitle = this.value;
             if (newTitle !== '') {
-                    dataHandler.renameBoard(boardTitle.id, newTitle, function () {
+                dataHandler.renameBoard(boardTitle.id, newTitle, function () {
                     boardTitle.innerHTML = `<span>${newTitle}</span>`;
                 });
             }
@@ -239,7 +243,32 @@ export let dom = {
         dataHandler.createNewCard(boardId, function (card) {
             dom.showCard(card);
         })
-    }
+    },
 
+    editColumn: function () {
+        const boards = document.querySelectorAll('.board');
+        for (let board of boards) {
+            const columnTitles = board.querySelectorAll('.board-column-title');
+            for (let columnTitle of columnTitles) {
+                columnTitle.addEventListener('click', dom.renameColumnTitle);
+            }
+        }
+    },
+    renameColumnTitle: function (e) {
+         let columnTitle = e.currentTarget;
+         columnTitle.innerHTML = `<input type="text" name="new_title" placeholder="${columnTitle.textContent}" required>`;
+         columnTitle.firstElementChild.focus();
+         columnTitle.firstElementChild.addEventListener('blur', function () {
+            let newTitle = this.value;
+            let colId = columnTitle.getAttribute('id').slice(-1);
+            console.log(newTitle);
+            if (newTitle !== '') {
+                dataHandler.renameColumn(colId, newTitle, function () {
+                    columnTitle.innerHTML = `<span>${newTitle}</span>`;
+                });
+            }
+
+         });
+    }
 };
 
