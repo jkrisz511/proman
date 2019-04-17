@@ -106,7 +106,8 @@ export let dom = {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards);
-            dom.editCard();
+            console.log(boardId);
+            dom.editCard(boardId);
         })
     },
 
@@ -197,9 +198,8 @@ export let dom = {
             for (let button of addButtons) {
                 button.addEventListener('click', function () {
                     let boardIdText = button.closest('.board').getAttribute('id');
-                    console.log(button);
+                    //TODO fix slice methods bug
                     let boardIdNumber = boardIdText.slice(-1);
-                    console.log(boardIdText);
                     dom.createCard(boardIdNumber);
                 });
             }
@@ -248,24 +248,32 @@ export let dom = {
         dataHandler.createNewCard(boardId, function (card) {
             dom.showCard(card);
             //Edit card title
-            dom.editCard();
+            dom.editCard(boardId);
         })
     },
-    editCard: function () {
-        console.log('hello');
-        const boards = document.querySelectorAll('.board');
+    editCard: function (boardId) {
+        console.log('editCard');
+        const boards = document.querySelectorAll('.board')
         for (let board of boards) {
             const columns = board.querySelectorAll('.board-column');
+
             for (let column of columns) {
-                const cardTitles = column.querySelectorAll('.card-title');
+                // TODO fix id with data-board-id no slice method
+                let currentBoardId = parseInt(board.getAttribute('id').slice(-1));
+                if (boardId == currentBoardId) {
+                    const cardTitles = column.querySelectorAll('.card-title');
 
-                for (let cardTitle of cardTitles) {
-                    console.log(cardTitle);
+                    for (let cardTitle of cardTitles) {
+                        console.log(cardTitle);
 
-                    cardTitle.addEventListener('click', dom.renameCardTitle);
+                        cardTitle.addEventListener('click', dom.renameCardTitle);
+                    }
                 }
+
             }
         }
+
+
     },
     renameCardTitle: function (e) {
          let cardTitle = e.currentTarget;
