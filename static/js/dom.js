@@ -104,7 +104,10 @@ export let dom = {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards);
-        })
+            dom.deleteCard();
+
+        });
+
     },
 
     showCards: function (cards) {
@@ -114,13 +117,26 @@ export let dom = {
             const boardDiv = document.querySelector(`#board-${card['board_id']}`);
             const colDiv = boardDiv.querySelector(`.col-${card["statuses_id"]}`);
             this._appendToElement(colDiv, `
-                <div class="card">
+                <div data-card-id="${card.id}" class="card">
                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
                     <div class="card-title">${card["title"]}</div>
                 </div>`
-            );
+            )
         }
 
+    },
+
+    deleteCard: function(){
+        let cards = document.querySelectorAll('.card-remove')
+        for(let card of cards){
+            card.addEventListener('click',function () {
+                let selectCard = card.parentNode;
+                let cardID = (selectCard.getAttribute('data-card-id'));
+                this.parentElement.remove();
+                dataHandler.deleteCard(cardID);
+
+            })
+        }
     },
 
      showCard: function(card) {
@@ -242,6 +258,7 @@ export let dom = {
     createCard: function (boardId) {
         dataHandler.createNewCard(boardId, function (card) {
             dom.showCard(card);
+            dom.deleteCard();
         })
     },
 
